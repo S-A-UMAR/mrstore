@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- SEO -->
+  <title>Mr Store — Buy PUBG UC Instantly in Nigeria</title>
+  <meta name="description" content="Buy PUBG Mobile UC instantly and securely in Nigeria. Fast delivery, Paystack-secured payments. No login required — just your Player ID." />
+  <meta name="keywords"    content="PUBG UC, buy UC Nigeria, PUBG Mobile top up, Mr Store, cheap UC Nigeria" />
+  <meta name="robots"      content="index, follow" />
+  <link rel="canonical"    href="https://mrstore.ng/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Mr Store — Buy PUBG UC Instantly" />
+  <meta property="og:description" content="Instant PUBG UC top-up for Nigerian players. Secure, fast, trusted." />
+  <meta property="og:url"         content="https://mrstore.ng/" />
+  <meta property="og:image"       content="/static/icons/icon-512.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Mr Store — Buy PUBG UC Instantly" />
+  <meta name="twitter:description" content="Instant PUBG UC top-up for Nigerian players. Secure, fast, trusted." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="/static/manifest.json" />
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="mobile-web-app-capable"             content="yes" />
+  <meta name="apple-mobile-web-app-capable"       content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title"         content="Mr Store" />
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-96.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/static/styles.css" />
+
+  <!-- Paystack Inline JS (deferred) -->
+  <script defer src="https://js.paystack.co/v2/inline.js"></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Mr Store",
+    "description": "Instant PUBG UC top-up for Nigerian players.",
+    "url": "https://mrstore.ng",
+    "currenciesAccepted": "NGN",
+    "paymentAccepted": "Credit Card, Bank Transfer, USSD",
+    "areaServed": "NG"
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- App Loader -->
+  <div id="app-loader" role="status" aria-label="Loading Mr Store">
+    <div class="loader-logo">MR STORE</div>
+    <div class="spinner" aria-hidden="true"></div>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="site-logo">
+        <svg class="logo-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <rect x="2" y="6" width="20" height="12" rx="2"/>
+          <path d="M6 12h4m-2-2v4m7-2h.01m1.99 0h.01"/>
+        </svg>
+        <span>MR</span>&nbsp;STORE
+      </div>
+      
+      <!-- Desktop Navbar -->
+      <nav class="desktop-nav" role="navigation" aria-label="Main Navigation">
+        <a href="#home" class="nav-link active" data-target="home">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Shop
+        </a>
+        <a href="#track" class="nav-link" data-target="track">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          Track Order
+        </a>
+        <a href="#faq" class="nav-link" data-target="faq">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          FAQs
+        </a>
+        
+        <!-- Auth Links (Swapped dynamically by app.js) -->
+        <a href="#login" id="nav-link-login" class="nav-link" data-target="login">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
+          Login / Sign Up
+        </a>
+        <a href="#profile" id="nav-link-profile" class="nav-link hidden" data-target="profile">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Profile
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main role="main" class="main-container">
+
+    <!-- 1. SHOP / HOME VIEW -->
+    <section id="view-home" class="spa-view active" aria-label="Shop Catalog">
+      <div class="hero">
+        <h1 id="hero-heading">
+          PUBG Mobile UC Top-Up<br />
+          <span class="highlight">Direct Player ID Delivery</span>
+        </h1>
+        <p class="hero-sub">
+          Instant direct-to-account top-up aggregation. No passwords needed. 
+          Enter your numeric Player ID, select your UC package, and pay securely.
+        </p>
+
+        <div class="trust-badges" role="list">
+          <div class="badge-pill" role="listitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Paystack Secured
+          </div>
+          <div class="badge-pill" role="listitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 11.08 12 19 9 15"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            Instant Fulfillment
+          </div>
+          <div class="badge-pill" role="listitem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            No Login Info Needed
+          </div>
+        </div>
+      </div>
+
+      <div class="checkout-section">
+        
+        <!-- Saved IDs checkout shortcut (Visible only if logged in and has saved IDs) -->
+        <div id="checkout-saved-ids-wrap" class="checkout-saved-ids-wrap hidden">
+          <h3 class="checkout-sub-title">Quick Select Saved Account</h3>
+          <div id="checkout-saved-ids-list" class="checkout-saved-ids-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Step 1: Player ID Card -->
+        <h2 class="section-title">Step 1 — Enter PUBG Player ID</h2>
+        <div class="player-id-card">
+          <label class="input-label" for="player-id-input">
+            <svg class="label-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            PUBG numeric Player ID
+          </label>
+          <div class="player-input-wrap">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <input
+              type="text"
+              id="player-id-input"
+              name="player_id"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="20"
+              placeholder="e.g. 5123456789"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p id="player-id-hint" class="input-hint">
+            To locate Player ID: Open PUBG Mobile → Tap avatar → Copy the numbers below your name.
+          </p>
+          <p id="player-id-error" class="input-error" role="alert" aria-live="polite"></p>
+        </div>
+
+        <!-- Step 2: UC Package Grid -->
+        <h2 class="section-title">Step 2 — Select UC Package</h2>
+        <div id="products-grid" class="products-grid" role="radiogroup" aria-label="UC Packages">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Step 3: Checkout -->
+        <h2 class="section-title">Step 3 — Payment &amp; Checkout</h2>
+        <div class="buy-btn-wrap">
+          <button id="buy-btn" type="button" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px; vertical-align:middle;" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Pay with Paystack
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. LOGIN / SIGN UP VIEW -->
+    <section id="view-login" class="spa-view" aria-label="Account Login">
+      <div class="auth-wrapper">
+        
+        <!-- Login Panel -->
+        <div id="auth-panel-login" class="auth-card">
+          <h2 class="auth-title">Log In to Your Account</h2>
+          <p class="auth-sub text-muted">Save your Player IDs, track orders, and view transaction history.</p>
+          
+          <form id="form-login" class="auth-form" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label for="login-username">Username</label>
+              <input type="text" id="login-username" required autocomplete="username" />
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required autocomplete="current-password" />
+            </div>
+            <button type="submit" class="auth-submit-btn">Log In</button>
+          </form>
+          
+          <p class="auth-switch-text mt-md">
+            Don't have an account? <button type="button" class="switch-link-btn" onclick="switchAuthPanel('register')">Create an Account</button>
+          </p>
+        </div>
+
+        <!-- Register Panel -->
+        <div id="auth-panel-register" class="auth-card hidden">
+          <h2 class="auth-title">Create an Account</h2>
+          <p class="auth-sub text-muted">Join Mr Store to track all your orders and save Player IDs.</p>
+          
+          <form id="form-register" class="auth-form" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label for="register-username">Username</label>
+              <input type="text" id="register-username" required minlength="3" autocomplete="username" />
+            </div>
+            <div class="form-group">
+              <label for="register-email">Email Address</label>
+              <input type="email" id="register-email" required autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" required minlength="6" autocomplete="new-password" />
+            </div>
+            <button type="submit" class="auth-submit-btn">Register</button>
+          </form>
+          
+          <p class="auth-switch-text mt-md">
+            Already have an account? <button type="button" class="switch-link-btn" onclick="switchAuthPanel('login')">Log In</button>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. PROFILE VIEW -->
+    <section id="view-profile" class="spa-view" aria-label="User Profile">
+      <div class="profile-layout-grid">
+        
+        <!-- Left Side: Profile info & Saved IDs -->
+        <div class="profile-left-col">
+          
+          <!-- User Details Card -->
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="avatar-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div>
+                <h2 id="profile-user-name" class="profile-name">...</h2>
+                <p id="profile-user-email" class="profile-email text-muted">...</p>
+              </div>
+            </div>
+            <div class="profile-card-body">
+              <p class="join-date text-muted">Joined on: <span id="profile-join-date">...</span></p>
+              <button id="profile-logout-btn" class="profile-logout-btn">Log Out</button>
+            </div>
+          </div>
+
+          <!-- Saved Player IDs Card -->
+          <div class="profile-card mt-md">
+            <h3>Saved PUBG Player IDs</h3>
+            <p class="text-muted" style="font-size:0.8rem; margin-bottom:12px;">Save Player IDs for quicker checkout selection.</p>
+            
+            <div id="saved-ids-list" class="saved-ids-list">
+              <!-- Populated dynamically -->
+            </div>
+
+            <form id="form-add-saved-id" class="add-saved-id-form mt-md">
+              <div class="form-row">
+                <input type="text" id="add-id-value" placeholder="Player ID (e.g. 51234)" required />
+                <input type="text" id="add-id-label" placeholder="Label (e.g. Main)" required />
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Order Transaction History -->
+        <div class="profile-right-col">
+          <div class="profile-card history-card">
+            <h3>Order History &amp; Receipts</h3>
+            <p class="text-muted" style="font-size:0.8rem; margin-bottom:16px;">Review status and details of your previous orders.</p>
+            
+            <div class="table-container">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Player ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="profile-order-history-rows">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. TRACK ORDER VIEW -->
+    <section id="view-track" class="spa-view" aria-label="Track Order Status">
+      <div class="screen-header">
+        <h2>Order Tracking</h2>
+        <p class="text-muted">Enter your Order Reference UUID to monitor your top-up status.</p>
+      </div>
+
+      <div class="track-form-card">
+        <form id="track-form" onsubmit="event.preventDefault();">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input 
+              type="text" 
+              id="search-order-id" 
+              placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000" 
+              required 
+            />
+          </div>
+          <button type="submit" id="search-submit-btn">Track</button>
+        </form>
+      </div>
+
+      <!-- Live Tracking Result Card -->
+      <div id="tracking-result" class="tracking-result-card hidden">
+        <div class="result-header">
+          <div>
+            <span class="ref-label">Order Reference:</span>
+            <span id="res-order-id" class="ref-value"></span>
+          </div>
+          <div id="res-status-badge" class="badge"></div>
+        </div>
+
+        <div class="result-body">
+          <div class="detail-row">
+            <span class="detail-label">Player ID:</span>
+            <strong id="res-player-id"></strong>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">UC Value:</span>
+            <strong id="res-product-name"></strong>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Price Paid:</span>
+            <strong id="res-price"></strong>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ordered at:</span>
+            <span id="res-time"></span>
+          </div>
+        </div>
+
+        <!-- Flow Visual Timeline -->
+        <div class="timeline-wrapper">
+          <div class="timeline-step" id="step-pending">
+            <div class="step-bullet">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="step-label">Order Placed</div>
+          </div>
+          <div class="timeline-step" id="step-paid">
+            <div class="step-bullet">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="step-label">Payment Received</div>
+          </div>
+          <div class="timeline-step" id="step-fulfilled">
+            <div class="step-bullet">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="step-label">UC Credited</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. FAQS VIEW -->
+    <section id="view-faq" class="spa-view" aria-label="Frequently Asked Questions">
+      <div class="screen-header">
+        <h2>Frequently Asked Questions</h2>
+        <p class="text-muted">General guidelines on direct PUBG Mobile credits.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>How fast is delivery?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-content">
+            <p>Direct top-ups are initiated instantly. Once payment is confirmed, UC is credited to your character within 10 to 30 seconds.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Are login details needed?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-content">
+            <p>No. We only use your numeric PUBG Player ID. Your account details remain fully safe.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Can I get a refund if I enter a wrong Player ID?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-content">
+            <p>Fulfillment is permanent and automated. Double check your character ID name before finalizing checkout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom Tabs -->
+  <nav class="mobile-tab-bar" role="navigation" aria-label="Mobile Navigation Menu">
+    <a href="#home" class="tab-link active" data-target="home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Shop</span>
+    </a>
+    <a href="#track" class="tab-link" data-target="track">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <span>Track</span>
+    </a>
+    
+    <!-- Auth switcher mobile links -->
+    <a href="#login" id="tab-link-login" class="tab-link" data-target="login">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
+      <span>Login</span>
+    </a>
+    <a href="#profile" id="tab-link-profile" class="tab-link hidden" data-target="profile">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <p>
+      &copy; 2026 Mr Store. All rights reserved.<br />
+      Independent UC reseller. PUBG Mobile is a trademark of Krafton, Inc.<br />
+      <a href="#faq">Terms of Service</a> &nbsp;·&nbsp; <a href="#faq">Refund Policy</a>
+    </p>
+  </footer>
+
+  <!-- Webhook Verification / Fulfillment Progress Modal Overlay -->
+  <div id="payment-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="overlay-title" aria-live="polite" aria-hidden="true">
+    <div class="overlay-modal-box">
+      <div class="overlay-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <h3 id="overlay-title" class="overlay-title">Processing</h3>
+      <p id="overlay-sub" class="overlay-sub"></p>
+      
+      <div id="overlay-progress" class="progress-track" aria-label="Processing Progress" role="progressbar">
+        <div class="progress-bar"></div>
+      </div>
+      
+      <div id="overlay-state"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Support Floating Button -->
+  <button id="wa-fab" type="button" aria-label="Contact Customer Support on WhatsApp" title="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.987.576 3.836 1.568 5.393L2 22l4.787-1.538A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.522 2 12 2h-.001zm.001 18a7.958 7.958 0 01-4.303-1.255l-.308-.183-3.198 1.027.978-3.122-.2-.321A7.952 7.952 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/>
+    </svg>
+  </button>
+
+  <!-- App Script (deferred) -->
+  <script defer src="/static/app.js"></script>
+
+</body>
+</html>
