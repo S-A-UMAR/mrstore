@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "installCommand": "pip3 install -r requirements.txt && chmod +x build.sh && ./build.sh",
   "builds": [
     {
       "src": "mr_store_project/wsgi.py",
@@ -9,15 +8,16 @@
         "maxLambdaSize": "15mb",
         "runtime": "python3.12"
       }
+    },
+    {
+      "src": "static/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "dest": "/static/$1"
     },
     {
       "src": "/(.*)",
