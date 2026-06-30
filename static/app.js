@@ -667,16 +667,12 @@ async function handleBuyClick() {
     showToast('Select a UC package first.', 'error');
     return;
   }
-  if (!state.config?.paystack_public_key) {
-    showToast('Fulfillment systems config missing.', 'error');
-    return;
-  }
 
   setBuyButtonLoading(true);
   
   showPaymentOverlay(
-    'Connecting Paystack Gate...',
-    'Redirecting to secure gateway.',
+    'Preparing Order...',
+    'Opening WhatsApp chat with order details.',
     true
   );
 
@@ -697,32 +693,43 @@ async function handleBuyClick() {
     return;
   }
 
-  const { order_id, access_code, amount } = orderData;
+  // Generate WhatsApp message
+  const product = state.selectedProduct;
+  const playerId = getPlayerId();
+  const storeName = state.config?.store_name || 'Mr Store';
+  const whatsappNumber = state.config?.support_whatsapp || '+2348000000000';
+  
+  const message = `
+Hello ${storeName}! 👋
 
-  /* global PaystackPop */
-  const handler = PaystackPop.setup({
-    key:         state.config.paystack_public_key,
-    access_code: access_code,
-    amount:      amount,
-    currency:    state.config.currency || 'NGN',
-    ref:         orderData.reference,
+I'd like to place an order:
 
-    onSuccess(tx) {
-      showPaymentOverlay(
-        'Verifying Payment & Automated Top-Up...',
-        'Confirming receipt values. Do not close this window.',
-        true
-      );
-      startOrderPolling(order_id);
-    },
-    onCancel() {
-      closeOverlay();
-      setBuyButtonLoading(false);
-      showToast('Payment window dismissed.', 'info');
-    },
-  });
+🛒 Order Details:
+- Player ID: ${playerId}
+- Package: ${product.name}
+- UC Amount: ${product.uc_amount} UC
+- Price: ₦${Number(product.price_ngn).toLocaleString('en-NG')}
+- Order ID: ${orderData.order_id}
 
-  handler.openIframe();
+📧 Email for updates: ${email || 'Not provided'}
+
+Please confirm how to make payment!
+  `.trim();
+  
+  // Open WhatsApp
+  const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+  
+  // Show success overlay
+  setBuyButtonLoading(false);
+  closeOverlay();
+  showToast('Opening WhatsApp with your order details!', 'success');
+  
+  // Redirect to track page
+  setTimeout(() => {
+    window.location.hash = '#track';
+    dom.searchOrderId().value = orderData.order_id;
+  }, 1000);
 }
 
 // =============================================================

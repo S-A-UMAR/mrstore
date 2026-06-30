@@ -33,9 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'drf_spectacular',
-    'django_celery_beat',
-    'django_celery_results',
     'orders',
 ]
 
@@ -185,29 +182,29 @@ STORE_CURRENCY = env('STORE_CURRENCY', default='NGN')
 SUPPORT_WHATSAPP_NUMBER = env('SUPPORT_WHATSAPP_NUMBER', default='+2348000000000')
 
 # ---------------------------------------------------------------------------
-# Celery Configuration
+# Celery Configuration (Optional, commented out for dev)
 # ---------------------------------------------------------------------------
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/1')
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Lagos'
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+# CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+# CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/1')
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Africa/Lagos'
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
 
-# Celery Beat scheduled tasks
-from celery.schedules import crontab
-CELERY_BEAT_SCHEDULE = {
-    'retry-failed-orders': {
-        'task': 'orders.tasks.retry_failed_orders',
-        'schedule': crontab(minute='*/5'),  # Every 5 minutes
-    },
-    'check-order-status': {
-        'task': 'orders.tasks.check_order_status',
-        'schedule': crontab(minute='*/10'),  # Every 10 minutes
-    },
-}
+# # Celery Beat scheduled tasks
+# from celery.schedules import crontab
+# CELERY_BEAT_SCHEDULE = {
+#     'retry-failed-orders': {
+#         'task': 'orders.tasks.retry_failed_orders',
+#         'schedule': crontab(minute='*/5'),  # Every 5 minutes
+#     },
+#     'check-order-status': {
+#         'task': 'orders.tasks.check_order_status',
+#         'schedule': crontab(minute='*/10'),  # Every 10 minutes
+#     },
+# }
 
 # ---------------------------------------------------------------------------
 # Email Configuration

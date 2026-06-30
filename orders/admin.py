@@ -53,7 +53,7 @@ class RefundAdmin(admin.ModelAdmin):
     list_display = ['id', 'order', 'amount', 'status_badge', 'requested_at', 'approved_at']
     list_filter = ['status', 'requested_at']
     search_fields = ['id', 'order__id', 'order__player_id']
-    readonly_fields = ['id', 'requested_at', 'created_at']
+    readonly_fields = ['id', 'requested_at']
     fieldsets = (
         ('Refund Info', {
             'fields': ('id', 'order', 'amount', 'reason', 'status')
@@ -66,7 +66,7 @@ class RefundAdmin(admin.ModelAdmin):
             'fields': ('admin_notes',),
         }),
         ('Timestamps', {
-            'fields': ('requested_at', 'approved_at', 'completed_at', 'created_at'),
+            'fields': ('requested_at', 'approved_at', 'completed_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )

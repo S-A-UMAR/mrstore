@@ -172,13 +172,11 @@ def saved_id_remove(request, record_id):
 class OrderCreateView(APIView):
     """
     Creates a PENDING order (linked to request.user if logged in)
-    and returns Paystack metadata.
+    and returns order ID to use in WhatsApp chat.
     """
     throttle_classes = [OrderCreateThrottle]
 
     def post(self, request, *args, **kwargs):
-        from django.conf import settings
-
         serializer = OrderCreateSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(
@@ -214,33 +212,15 @@ class OrderCreateView(APIView):
                     product=product,
                     status=Order.Status.PENDING,
                 )
-                paystack_data = initialize_transaction(
-                    email=customer_email or user.email if user else 'noreply@mrstore.ng',
-                    amount_kobo=product.price_kobo,
-                    order_id=str(order.id),
-                    metadata={
-                        'player_id': player_id,
-                        'product_name': product.name,
-                        'uc_amount': product.uc_amount,
-                        'order_id': str(order.id),
-                        'user_id': user.id if user else None,
-                        'custom_fields': [
-                            {'display_name': 'Player ID', 'variable_name': 'player_id', 'value': player_id},
-                            {'display_name': 'Package',   'variable_name': 'package',   'value': product.name},
-                        ],
-                    },
-                )
+                # Create Payment record with dummy reference (since we're using WhatsApp)
                 Payment.objects.create(
                     order=order,
-                    paystack_reference=paystack_data['reference'],
+                    paystack_reference=f'WA-{order.id}',
                     amount=product.price_ngn,
-                    paystack_access_code=paystack_data['access_code'],
+                    paystack_access_code='',
                     status=Payment.Status.PENDING,
                 )
 
-        except PaystackError as exc:
-            logger.error('Order creation failed (Paystack) | player=%s | %s', player_id, exc)
-            return Response({'error': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
         except Exception as exc:
             logger.exception('Unexpected error during order creation | player=%s', player_id)
             return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -251,10 +231,6 @@ class OrderCreateView(APIView):
         )
         return Response({
             'order_id': str(order.id),
-            'reference': paystack_data['reference'],
-            'access_code': paystack_data['access_code'],
-            'amount': product.price_kobo,
-            'paystack_public_key': settings.PAYSTACK_PUBLIC_KEY,
         }, status=status.HTTP_201_CREATED)
 
 
