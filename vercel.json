@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "pip3 install -r requirements.txt && chmod +x build.sh && ./build.sh",
   "builds": [
     {
       "src": "mr_store_project/wsgi.py",
