@@ -16,7 +16,7 @@ env = environ.Env(
 )
 environ.Env.read_env(BASE_DIR / '.env')
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default='dev-secret-key-for-migrations-only-change-in-production')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'drf_spectacular',
+    'django_celery_beat',
+    'django_celery_results',
     'orders',
 ]
 
@@ -69,11 +72,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mr_store_project.wsgi.application'
 
 # ---------------------------------------------------------------------------
-# Database
+# Database (SQLite for dev, configure TiDB via DATABASE_URL in prod)
 # ---------------------------------------------------------------------------
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3'),
-}
+if env('DATABASE_URL', default='').startswith('mysql'):
+    DATABASES = {
+        'default': env.db_url('DATABASE_URL'),
+    }
+    DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'
+else:
+    # Development: SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # ---------------------------------------------------------------------------
 # REST Framework
@@ -170,6 +183,50 @@ WHOLESALER_API_BASE_URL = env('WHOLESALER_API_BASE_URL', default='https://api.yo
 STORE_NAME = env('STORE_NAME', default='Mr Store')
 STORE_CURRENCY = env('STORE_CURRENCY', default='NGN')
 SUPPORT_WHATSAPP_NUMBER = env('SUPPORT_WHATSAPP_NUMBER', default='+2348000000000')
+
+# ---------------------------------------------------------------------------
+# Celery Configuration
+# ---------------------------------------------------------------------------
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/1')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Lagos'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+
+# Celery Beat scheduled tasks
+from celery.schedules import crontab
+CELERY_BEAT_SCHEDULE = {
+    'retry-failed-orders': {
+        'task': 'orders.tasks.retry_failed_orders',
+        'schedule': crontab(minute='*/5'),  # Every 5 minutes
+    },
+    'check-order-status': {
+        'task': 'orders.tasks.check_order_status',
+        'schedule': crontab(minute='*/10'),  # Every 10 minutes
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Email Configuration
+# ---------------------------------------------------------------------------
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.sendgrid.net')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_HOST_USER = env('SENDGRID_API_USER', default='apikey')
+EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY', default='')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@mrstore.ng')
+
+# SMS Configuration (Twilio)
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN', default='')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER', default='')
+
+# SendGrid Configuration
+SENDGRID_API_KEY = env('SENDGRID_API_KEY', default='')
 
 # ---------------------------------------------------------------------------
 # Logging

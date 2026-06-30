@@ -3,7 +3,7 @@ Mr Store — Upgraded DRF Serializers
 """
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, Order, Payment, SavedPlayerID
+from .models import Product, Order, Payment, SavedPlayerID, Refund, Notification
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -97,3 +97,80 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'date_joined']
+
+
+# Admin Dashboard Serializers
+
+class PaymentDetailSerializer(serializers.ModelSerializer):
+    """Detailed payment info for admin dashboard."""
+    order_id = serializers.CharField(source='order.id', read_only=True)
+    
+    class Meta:
+        model = Payment
+        fields = ['id', 'order_id', 'paystack_reference', 'amount', 'status', 'verified_at', 'created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at', 'paystack_reference']
+
+
+class RefundSerializer(serializers.ModelSerializer):
+    """Refund management serializer."""
+    order_details = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Refund
+        fields = ['id', 'order', 'order_details', 'amount', 'reason', 'status', 'admin_notes', 'requested_at', 'approved_at', 'completed_at']
+        read_only_fields = ['id', 'requested_at']
+    
+    def get_order_details(self, obj):
+        return {
+            'id': str(obj.order.id),
+            'player_id': obj.order.player_id,
+            'product': obj.order.product.name,
+            'original_amount': str(obj.order.product.price_ngn),
+        }
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    """Notification log serializer."""
+    order_id = serializers.CharField(source='order.id', read_only=True)
+    
+    class Meta:
+        model = Notification
+        fields = ['id', 'order_id', 'notification_type', 'channel', 'recipient', 'status', 'sent_at', 'created_at']
+        read_only_fields = ['id', 'created_at', 'sent_at']
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    """Detailed order info for admin dashboard."""
+    user_email = serializers.SerializerMethodField()
+    product_details = ProductSerializer(source='product', read_only=True)
+    payment_details = PaymentDetailSerializer(source='payment', read_only=True)
+    refund_details = RefundSerializer(source='refund', read_only=True)
+    notification_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Order
+        fields = [
+            'id', 'player_id', 'customer_email', 'user_email', 'product_details',
+            'status', 'wholesaler_order_id', 'failure_reason', 'failure_count',
+            'payment_details', 'refund_details', 'notification_count',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'wholesaler_order_id']
+    
+    def get_user_email(self, obj):
+        return obj.user.email if obj.user else None
+    
+    def get_notification_count(self, obj):
+        return obj.notifications.count()
+
+
+class AdminDashboardStatsSerializer(serializers.Serializer):
+    """Dashboard KPI statistics."""
+    total_revenue = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_orders = serializers.IntegerField()
+    fulfilled_orders = serializers.IntegerField()
+    failed_orders = serializers.IntegerField()
+    pending_refunds = serializers.IntegerField()
+    today_revenue = serializers.DecimalField(max_digits=15, decimal_places=2)
+    today_orders = serializers.IntegerField()
+    conversion_rate = serializers.FloatField()

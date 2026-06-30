@@ -189,18 +189,22 @@ class OrderCreateView(APIView):
         
         # Determine order link
         user = request.user if request.user.is_authenticated else None
-        email = user.email if (user and user.email) else f'player-{player_id}@mrstore.ng'
+        customer_email = request.data.get('email', '').strip()  # Get email from request for guests
+        
+        if not customer_email:
+            customer_email = user.email if (user and user.email) else ''
 
         try:
             with transaction.atomic():
                 order = Order.objects.create(
                     user=user,
                     player_id=player_id,
+                    customer_email=customer_email,
                     product=product,
                     status=Order.Status.PENDING,
                 )
                 paystack_data = initialize_transaction(
-                    email=email,
+                    email=customer_email or user.email if user else 'noreply@mrstore.ng',
                     amount_kobo=product.price_kobo,
                     order_id=str(order.id),
                     metadata={
