@@ -9,6 +9,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from rest_framework import status
 from rest_framework.decorators import api_view, throttle_classes, permission_classes
@@ -28,6 +29,7 @@ from .serializers import (
     UserSerializer
 )
 from .wholesaler_client import WholesalerClient, WholesalerError
+from .validators import validate_pubg_player_id, get_player_id_error_message
 
 logger = logging.getLogger('orders')
 
@@ -186,6 +188,15 @@ class OrderCreateView(APIView):
 
         player_id = serializer.validated_data['player_id']
         product: Product = serializer.validated_data['product_id']
+        
+        # Validate Player ID format (backend validation)
+        try:
+            validate_pubg_player_id(player_id)
+        except ValidationError as e:
+            return Response(
+                {'error': {'player_id': [str(e)]}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         
         # Determine order link
         user = request.user if request.user.is_authenticated else None

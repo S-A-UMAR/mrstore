@@ -476,11 +476,13 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
 
 #player-id-input {
     padding-left: 44px;
+    padding-right: 44px;
 }
 
 @media (min-width: 768px) {
     #player-id-input {
         padding-left: 48px;
+        padding-right: 48px;
     }
 }
 
@@ -491,6 +493,52 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
 #player-id-input:focus, #search-order-id:focus, .auth-form input:focus, .add-saved-id-form input:focus {
     border-color: var(--clr-primary);
     box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* Player ID Validation States */
+#player-id-input.valid {
+    border-color: var(--clr-success);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+}
+
+#player-id-input.invalid {
+    border-color: var(--clr-danger);
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}
+
+.player-id-validation-indicator {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+#player-id-input.valid ~ .player-id-validation-indicator {
+    opacity: 1;
+}
+
+.player-id-validation-indicator .valid-check {
+    stroke: var(--clr-success);
+    animation: checkmark-bounce 300ms ease-out;
+}
+
+@keyframes checkmark-bounce {
+    0% {
+        stroke-dashoffset: 48;
+        stroke-dasharray: 48;
+        opacity: 0;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
 }
 
 .input-icon, .search-icon {
@@ -683,6 +731,58 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
 }
 
 /* =============================================================
+   11. CHECKOUT EMAIL INPUT
+   ============================================================= */
+.checkout-email-card {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+    .checkout-email-card {
+        padding: 24px;
+    }
+}
+
+.checkout-email-wrap {
+    position: relative;
+    margin-top: 10px;
+}
+
+#checkout-email-input {
+    width: 100%;
+    background: rgba(2, 6, 23, 0.7);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    color: var(--clr-text);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 14px;
+    transition: all var(--transition);
+    outline: none;
+}
+
+@media (min-width: 768px) {
+    #checkout-email-input {
+        font-size: 1rem;
+        padding: 14px 16px;
+    }
+}
+
+#checkout-email-input:focus {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+#checkout-email-input::placeholder {
+    color: var(--clr-text-dim);
+}
+
+/* =============================================================
    11. CHECKOUT BUTTON
    ============================================================= */
 .buy-btn-wrap {
@@ -727,6 +827,26 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
     cursor: not-allowed;
     transform: none;
     box-shadow: var(--shadow-sm);
+}
+
+.loader-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+}
+
+.loader-spinner.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* =============================================================

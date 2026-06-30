@@ -30,7 +30,10 @@ const dom = {
   productsGrid:    () => $('#products-grid'),
   playerInput:     () => $('#player-id-input'),
   playerError:     () => $('#player-id-error'),
+  checkoutEmail:   () => $('#checkout-email-input'),
   buyBtn:          () => $('#buy-btn'),
+  buyBtnText:      () => $('#buy-btn-text'),
+  buyBtnLoader:    () => $('#buy-btn-loader'),
   
   // Auth Nav Links
   navLinkLogin:    () => $('#nav-link-login'),
@@ -134,6 +137,92 @@ async function apiFetch(url, options = {}) {
     throw new Error(msg);
   }
   return data;
+}
+
+// =============================================================
+// Module: Player ID Validation
+// =============================================================
+function validatePubgPlayerId(playerId) {
+  /**
+   * Validate PUBG Mobile Player ID format
+   * Rules: 1-24 chars, alphanumeric + hyphens only,
+   * no leading/trailing hyphens, no consecutive hyphens
+   */
+  if (!playerId || playerId.trim().length === 0) {
+    return { valid: false, error: 'Player ID is required' };
+  }
+  
+  playerId = playerId.trim();
+  
+  // Check length
+  if (playerId.length < 1 || playerId.length > 24) {
+    return { 
+      valid: false, 
+      error: `Player ID must be 1-24 characters (currently ${playerId.length})` 
+    };
+  }
+  
+  // Check allowed characters (alphanumeric + hyphens only)
+  if (!/^[a-zA-Z0-9\-]+$/.test(playerId)) {
+    return { 
+      valid: false, 
+      error: 'Player ID can only contain letters, numbers, and hyphens' 
+    };
+  }
+  
+  // Cannot start or end with hyphen
+  if (playerId.startsWith('-') || playerId.endsWith('-')) {
+    return { 
+      valid: false, 
+      error: 'Player ID cannot start or end with a hyphen' 
+    };
+  }
+  
+  // No consecutive hyphens
+  if (playerId.includes('--')) {
+    return { 
+      valid: false, 
+      error: 'Player ID cannot contain consecutive hyphens' 
+    };
+  }
+  
+  return { valid: true, error: null };
+}
+
+function displayPlayerIdError(errorMsg) {
+  const errorEl = dom.playerError();
+  if (!errorEl) return;
+  
+  if (errorMsg) {
+    errorEl.textContent = errorMsg;
+    errorEl.classList.add('visible');
+  } else {
+    errorEl.classList.remove('visible');
+    errorEl.textContent = '';
+  }
+}
+
+function updatePlayerIdValidationUI() {
+  const input = dom.playerInput();
+  if (!input) return;
+  
+  const playerId = input.value.trim();
+  const validation = validatePubgPlayerId(playerId);
+  
+  if (playerId.length === 0) {
+    input.classList.remove('valid', 'invalid');
+    displayPlayerIdError(null);
+  } else if (validation.valid) {
+    input.classList.add('valid');
+    input.classList.remove('invalid');
+    displayPlayerIdError(null);
+  } else {
+    input.classList.add('invalid');
+    input.classList.remove('valid');
+    displayPlayerIdError(validation.error);
+  }
+  
+  updateBuyButton();
 }
 
 // =============================================================
@@ -565,6 +654,15 @@ function startOrderPolling(orderId) {
 
 async function handleBuyClick() {
   if (!validateForm()) return;
+  
+  // Validate email if provided
+  const email = getCheckoutEmail();
+  if (email && !validateEmail(email)) {
+    showToast('Please enter a valid email address.', 'error');
+    dom.checkoutEmail()?.focus();
+    return;
+  }
+  
   if (!state.selectedProduct) {
     showToast('Select a UC package first.', 'error');
     return;
@@ -574,9 +672,8 @@ async function handleBuyClick() {
     return;
   }
 
-  const btn = dom.buyBtn();
-  btn.disabled = true;
-
+  setBuyButtonLoading(true);
+  
   showPaymentOverlay(
     'Connecting Paystack Gate...',
     'Redirecting to secure gateway.',
@@ -590,11 +687,12 @@ async function handleBuyClick() {
       body: JSON.stringify({
         player_id: getPlayerId(),
         product_id: state.selectedProduct.id,
+        email: email,
       }),
     });
   } catch (err) {
     closeOverlay();
-    btn.disabled = false;
+    setBuyButtonLoading(false);
     showToast(err.message || 'Check out failed.', 'error');
     return;
   }
@@ -619,7 +717,7 @@ async function handleBuyClick() {
     },
     onCancel() {
       closeOverlay();
-      btn.disabled = false;
+      setBuyButtonLoading(false);
       showToast('Payment window dismissed.', 'info');
     },
   });
@@ -771,24 +869,51 @@ function initInputListeners() {
   if (!input) return;
   
   input.addEventListener('input', () => {
-    input.value = input.value.replace(/\D/g, '');
-    dom.playerError().classList.remove('visible');
-    
     // Deselect any highlighted quick select card
     if (state.selectedSavedId) {
       state.selectedSavedId = null;
       $$('.checkout-saved-id-card').forEach((c) => c.classList.remove('selected'));
     }
 
-    updateBuyButton();
+    // Real-time validation with visual feedback
+    updatePlayerIdValidationUI();
   });
 
   input.addEventListener('blur', () => {
-    if (input.value && input.value.length < 4) {
-      dom.playerError().textContent = 'Player ID must be 4+ digits.';
-      dom.playerError().classList.add('visible');
-    }
+    // Final validation on blur
+    updatePlayerIdValidationUI();
   });
+}
+
+// =============================================================
+// Module: Checkout Loading & UX States
+// =============================================================
+function setBuyButtonLoading(isLoading) {
+  const btn = dom.buyBtn();
+  const text = dom.buyBtnText();
+  const loader = dom.buyBtnLoader();
+  
+  if (!btn || !text || !loader) return;
+  
+  if (isLoading) {
+    btn.disabled = true;
+    text.classList.add('hidden');
+    loader.classList.remove('hidden');
+  } else {
+    btn.disabled = false;
+    text.classList.remove('hidden');
+    loader.classList.add('hidden');
+  }
+}
+
+function getCheckoutEmail() {
+  return (dom.checkoutEmail()?.value.trim() || '').toLowerCase();
+}
+
+function validateEmail(email) {
+  if (!email) return true; // Email is optional
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 // =============================================================
@@ -812,9 +937,10 @@ function getPlayerId() {
 
 function validateForm() {
   const id = getPlayerId();
-  if (!id || id.length < 4) {
-    dom.playerError().textContent = 'Enter a valid Player ID (4+ digits).';
-    dom.playerError().classList.add('visible');
+  const validation = validatePubgPlayerId(id);
+  
+  if (!validation.valid) {
+    displayPlayerIdError(validation.error);
     dom.playerInput()?.focus();
     return false;
   }
@@ -829,9 +955,10 @@ function updateBuyButton() {
   const btn = dom.buyBtn();
   if (!btn) return;
   const id = getPlayerId();
+  const validation = validatePubgPlayerId(id);
   const hasProduct = !!state.selectedProduct;
-  const hasId = id.length >= 4;
-  btn.disabled = !(hasProduct && hasId);
+  const hasValidId = validation.valid;
+  btn.disabled = !(hasProduct && hasValidId);
 }
 
 // =============================================================

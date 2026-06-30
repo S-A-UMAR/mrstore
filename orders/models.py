@@ -9,6 +9,7 @@ Exposes:
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from .validators import validate_pubg_player_id
 
 
 class Product(models.Model):
@@ -80,6 +81,7 @@ class Order(models.Model):
     )
     player_id = models.CharField(
         max_length=30,
+        validators=[validate_pubg_player_id],
         help_text="PUBG numeric Player ID supplied by the customer",
     )
     product = models.ForeignKey(
@@ -332,6 +334,7 @@ class SavedPlayerID(models.Model):
     )
     player_id = models.CharField(
         max_length=30,
+        validators=[validate_pubg_player_id],
         help_text="PUBG numeric Player ID",
     )
     label = models.CharField(
