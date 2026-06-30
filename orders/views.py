@@ -9,6 +9,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from rest_framework import status
 from rest_framework.decorators import api_view, throttle_classes, permission_classes
@@ -28,6 +29,7 @@ from .serializers import (
     UserSerializer
 )
 from .wholesaler_client import WholesalerClient, WholesalerError
+from .validators import validate_pubg_player_id, get_player_id_error_message
 
 logger = logging.getLogger('orders')
 
@@ -187,6 +189,15 @@ class OrderCreateView(APIView):
         player_id = serializer.validated_data['player_id']
         product: Product = serializer.validated_data['product_id']
         
+        # Validate Player ID format (backend validation)
+        try:
+            validate_pubg_player_id(player_id)
+        except ValidationError as e:
+            return Response(
+                {'error': {'player_id': [str(e)]}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        
         # Determine order link
         user = request.user if request.user.is_authenticated else None
         customer_email = request.data.get('email', '').strip()  # Get email from request for guests
@@ -335,3 +346,126 @@ class PaystackWebhookView(APIView):
             order.status = Order.Status.FAILED
             order.save(update_fields=['status', 'updated_at'])
             logger.error('Fulfillment error on webhook: %s', exc)
+
+
+# =============================================================
+# Admin Dashboard API Endpoints
+# =============================================================
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_stats(request):
+    """Dashboard statistics for admin panel"""
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    total_revenue = sum(float(o.product.price_ngn or 0) for o in Order.objects.filter(status=Order.Status.FULFILLED))
+    total_orders = Order.objects.count()
+    fulfilled_orders = Order.objects.filter(status=Order.Status.FULFILLED).count()
+    pending_refunds = 0  # Would connect to refunds model if available
+    
+    return Response({
+        'total_revenue': total_revenue,
+        'total_orders': total_orders,
+        'fulfilled_orders': fulfilled_orders,
+        'pending_refunds': pending_refunds,
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_orders_list(request):
+    """List all orders with filtering and search"""
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    orders = Order.objects.all().select_related('product').order_by('-created_at')
+    
+    # Search by player ID or order ID
+    search = request.query_params.get('search', '')
+    if search:
+        orders = orders.filter(player_id__icontains=search) | orders.filter(id__icontains=search)
+    
+    # Filter by status
+    status_filter = request.query_params.get('status', '')
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+    
+    # Limit
+    limit = int(request.query_params.get('limit', 50))
+    orders = orders[:limit]
+    
+    data = [{
+        'id': str(o.id),
+        'player_id': o.player_id,
+        'product_details': {
+            'id': o.product.id,
+            'name': o.product.name,
+            'original_amount': str(o.product.price_ngn),
+        },
+        'status': o.status,
+        'created_at': o.created_at.isoformat(),
+    } for o in orders]
+    
+    return Response({'results': data})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_order_detail(request, order_id):
+    """Get detailed order information"""
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    try:
+        order = Order.objects.select_related('product').get(id=order_id)
+        payment = Payment.objects.filter(order=order).first()
+        
+        data = {
+            'id': str(order.id),
+            'player_id': order.player_id,
+            'status': order.status,
+            'created_at': order.created_at.isoformat(),
+            'product_details': {
+                'id': order.product.id,
+                'name': order.product.name,
+                'original_amount': str(order.product.price_ngn),
+            },
+            'payment_details': {
+                'status': payment.status if payment else 'NOT FOUND',
+                'reference': payment.paystack_reference if payment else '',
+            },
+            'refund_details': None,
+        }
+        
+        return Response(data)
+    except Order.DoesNotExist:
+        return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_refunds_list(request):
+    """List refund requests (placeholder - would need Refund model)"""
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    # Placeholder - returns empty since we don't have a Refund model yet
+    return Response({'results': []})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def admin_refund_action(request, refund_id):
+    """Process refund actions (approve, process, complete)"""
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    action = request.data.get('action', '')
+    
+    # Placeholder response
+    return Response({
+        'status': 'action_queued',
+        'refund_id': refund_id,
+        'action': action,
+    })

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr Store Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/admin_dashboard.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-96.png" />
+</head>
+<body>
+  <div class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <div class="admin-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="6" width="20" height="12" rx="2"/>
+            <path d="M6 12h4m-2-2v4m7-2h.01m1.99 0h.01"/>
+          </svg>
+          <span>Mr Store Admin</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="stats">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="orders">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span>Orders</span>
+        </a>
+        <a href="#" class="nav-item" data-page="refunds">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+            <path d="M3 21v-5h5"></path>
+          </svg>
+          <span>Refunds</span>
+        </a>
+        <a href="#" class="nav-item" data-page="analytics">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span>Analytics</span>
+        </a>
+        <a href="#" class="nav-item" data-page="notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span>Notifications</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="logout-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      
+      <!-- Top Bar -->
+      <div class="admin-topbar">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="topbar-actions">
+          <span id="user-display" class="user-display">Admin User</span>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="admin-content">
+        
+        <!-- Dashboard Page -->
+        <section id="page-stats" class="page active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Total Revenue</span>
+                <svg class="stat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 6v6l4 2"></path>
+                </svg>
+              </div>
+              <div class="stat-value" id="stat-revenue">₦0</div>
+              <div class="stat-sub">All time</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Total Orders</span>
+                <svg class="stat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+              </div>
+              <div class="stat-value" id="stat-orders">0</div>
+              <div class="stat-sub">Completed orders</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Fulfilled</span>
+                <svg class="stat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div class="stat-value" id="stat-fulfilled">0</div>
+              <div class="stat-sub">Successfully delivered</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Pending Refunds</span>
+                <svg class="stat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                  <path d="M21 3v5h-5"></path>
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                  <path d="M3 21v-5h5"></path>
+                </svg>
+              </div>
+              <div class="stat-value" id="stat-refunds">0</div>
+              <div class="stat-sub">Requests awaiting action</div>
+            </div>
+          </div>
+
+          <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div id="activity-list" class="activity-list">
+              <p class="loading-text">Loading activity...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Orders Page -->
+        <section id="page-orders" class="page">
+          <div class="page-header">
+            <h2>Orders Management</h2>
+            <div class="page-controls">
+              <input type="search" id="orders-search" placeholder="Search by Player ID or Order ID..." class="search-input">
+              <select id="orders-filter" class="filter-select">
+                <option value="">All Status</option>
+                <option value="PENDING">Pending</option>
+                <option value="PAID">Paid</option>
+                <option value="FULFILLED">Fulfilled</option>
+                <option value="FAILED">Failed</option>
+              </select>
+            </div>
+          </div>
+          <div id="orders-table-wrap" class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Player ID</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody">
+                <tr><td colspan="7" class="loading-text">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Refunds Page -->
+        <section id="page-refunds" class="page">
+          <div class="page-header">
+            <h2>Refund Requests</h2>
+            <div class="page-controls">
+              <select id="refunds-filter" class="filter-select">
+                <option value="">All Status</option>
+                <option value="REQUESTED">Requested</option>
+                <option value="APPROVED">Approved</option>
+                <option value="PROCESSING">Processing</option>
+                <option value="COMPLETED">Completed</option>
+              </select>
+            </div>
+          </div>
+          <div id="refunds-table-wrap" class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Refund ID</th>
+                  <th>Order ID</th>
+                  <th>Amount</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Requested</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="refunds-tbody">
+                <tr><td colspan="7" class="loading-text">Loading refunds...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Analytics Page -->
+        <section id="page-analytics" class="page">
+          <h2>Analytics & Reporting</h2>
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <h3>Revenue Trend (Last 7 Days)</h3>
+              <div id="revenue-chart" class="chart-placeholder">Chart loading...</div>
+            </div>
+            <div class="analytics-card">
+              <h3>Top Products</h3>
+              <div id="products-chart" class="chart-placeholder">Chart loading...</div>
+            </div>
+            <div class="analytics-card">
+              <h3>Order Status Distribution</h3>
+              <div id="status-chart" class="chart-placeholder">Chart loading...</div>
+            </div>
+            <div class="analytics-card">
+              <h3>Conversion Metrics</h3>
+              <div id="conversion-metrics" class="metrics-list">
+                <p class="loading-text">Loading metrics...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notifications Page -->
+        <section id="page-notifications" class="page">
+          <div class="page-header">
+            <h2>Notification Log</h2>
+            <div class="page-controls">
+              <select id="notifications-filter" class="filter-select">
+                <option value="">All Type</option>
+                <option value="order_created">Order Created</option>
+                <option value="payment_confirmed">Payment Confirmed</option>
+                <option value="uc_delivered">UC Delivered</option>
+                <option value="order_failed">Order Failed</option>
+              </select>
+            </div>
+          </div>
+          <div id="notifications-table-wrap" class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Recipient</th>
+                  <th>Channel</th>
+                  <th>Status</th>
+                  <th>Sent</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="notifications-tbody">
+                <tr><td colspan="6" class="loading-text">Loading notifications...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Templates -->
+  <div id="modal-overlay" class="modal-overlay hidden"></div>
+  <div id="order-detail-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Order Details</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/admin_dashboard.js"></script>
+</body>
+</html>
